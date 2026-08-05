@@ -790,6 +790,33 @@ body.menu-open .menu__list a{ transform:none; }
 .awaiting::before{ content:'◇ '; font-style:normal; opacity:.6; }
 .field .awaiting,.ftr .awaiting{ color:var(--field-muted); }
 
+/* ------------------------------------------------------- PHOTO PLACEHOLDER --
+   The image-shaped version of .awaiting above: a framed, empty slot for a
+   photograph SCIPL has not supplied, at the slot's real aspect ratio, so a
+   screenshot never reads as finished content. Dashed border extends the same
+   "dotted = not real" vocabulary from a line of text to a whole box. Never a
+   generated or stock likeness — for a named person this is the only honest
+   option. One class, reused wherever a photograph is missing; set aspect-ratio
+   inline per slot. */
+.ph-frame{
+  position:relative; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:var(--space-2); text-align:center;
+  padding:var(--space-5); background:var(--bg-alt);
+  border:1px dashed var(--border); color:var(--fg-muted);
+}
+.ph-frame__mark{ font-size:1.375rem; line-height:1; opacity:.55; }
+.ph-frame__label{
+  font-size:var(--fs-small); font-style:italic;
+  border-bottom:1px dotted currentColor; padding-bottom:2px;
+}
+.ph-frame__spec{
+  font-size:var(--fs-meta); letter-spacing:var(--track-meta); text-transform:uppercase;
+  opacity:.75;
+}
+.field .ph-frame{
+  background:rgba(255,255,255,.06); border-color:var(--field-rule); color:var(--field-muted);
+}
+
 /* ============================================================ REVEAL ===== */
 /* Resting states for the entrance vocabulary. motion.js animates FROM these;
    if it never runs, .is-in is applied by the fallback and everything is visible.

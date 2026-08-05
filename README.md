@@ -222,5 +222,14 @@ invented is presented as fact.
   their decision (`questioned: true` in `data/logos.js`).
 - Bare-shell photography — the before/after slider currently pairs two finished
   photographs and says so on every project page.
+- **Portraits of Mahendra Mandal and Babita Mandal**, and a **team photograph**
+  for the project delivery team, for the Management block on `about.html`.
+  Rendered as framed, honest empty slots (`.ph-frame` in `site.css`) rather than
+  a stock or generated likeness — these are named, real people, so a synthetic
+  stand-in was never on the table. Portraits: portrait orientation, minimum
+  900px wide (card grade). Team photograph: **also portrait** — the three sit in
+  one row as peers, and a landscape frame there left the third column's text
+  starting 150px above its neighbours. A working shot on site, not a studio
+  group photo.
 - A form endpoint for the enquiry form. The site is static; nothing posts.
 - The "21+ years" line from the deck (founded Feb 2006 — that reads as 20).
