@@ -122,7 +122,7 @@ html{ font-size: calc(16px * var(--ui)); }
   --ease-out:  cubic-bezier(0.22, 1, 0.36, 1);
   --ease-io:   cubic-bezier(0.76, 0, 0.24, 1);
 
-  --hero-vh: 92svh;
+  --hero-vh: 100svh;
 }
 
 @media (prefers-reduced-motion: reduce){

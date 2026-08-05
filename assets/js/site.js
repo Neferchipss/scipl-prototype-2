@@ -119,13 +119,22 @@ const altFor = (p, i = 0) =>
 const ARROW = `<svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
   <path d="M0 5h14M10 1l4 4-4 4" stroke="currentColor" stroke-width="1.4"/></svg>`;
 
+/* Minimal iconography — one small stroke path each, no icon font/library. */
+const ICON = {
+  pin: `<svg class="ico" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 15S3 10.5 3 6.6A5 5 0 0 1 13 6.6C13 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.3"/></svg>`,
+  area: `<svg class="ico" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M1 1h4M1 1v4M15 1h-4M15 1v4M1 15h4M1 15v-4M15 15h-4M15 15v-4" stroke="currentColor" stroke-width="1.3"/></svg>`,
+  sector: `<svg class="ico" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 15V4l4-2 4 2v11M10 15V7l4-1v9" stroke="currentColor" stroke-width="1.3"/></svg>`,
+  status: `<svg class="ico" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.3"/><path d="M5.3 8.3l1.8 1.8 3.6-4" stroke="currentColor" stroke-width="1.3"/></svg>`,
+  client: `<svg class="ico" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="5.3" r="2.6" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 14c.9-3 3-4.4 5.5-4.4s4.6 1.4 5.5 4.4" stroke="currentColor" stroke-width="1.3"/></svg>`,
+};
+
 /* A card carries client, place and sector. No area — see the note on units. */
 function cardHTML(p, sizes, extra = ''){
   return `<a class="card rv" href="project.html?p=${p.slug}" data-nav ${extra}>
     <span class="card__fig">${pPic(p, heroImg(p), sizes, { alt: altFor(p) })}</span>
     <span class="card__body">
       <span class="card__client">${clientOf(p)}</span>
-      <span class="card__line">${placeOf(p)} · ${p.sector}</span>
+      <span class="card__line">${ICON.pin}${placeOf(p)} · ${p.sector}</span>
     </span>
   </a>`;
 }
@@ -139,7 +148,7 @@ function plateHTML(p, i){
     <span class="plate__body">
       <span class="plate__name">
         <h3>${clientOf(p)}</h3>
-        <span class="plate__line">${placeOf(p)} · ${p.sector}</span>
+        <span class="plate__line">${ICON.pin}${placeOf(p)} · ${p.sector}</span>
       </span>
       <span class="plate__go">View project ${ARROW}</span>
     </span>
@@ -522,29 +531,6 @@ const Lightbox = (() => {
   return { open };
 })();
 
-/* ======================================================= BEFORE / AFTER === */
-function beforeAfter(node){
-  const after = $('.ba__after', node), handle = $('.ba__handle', node);
-  let dragging = false;
-  const sizeUp = () => node.style.setProperty('--ba-w', node.getBoundingClientRect().width + 'px');
-  sizeUp();
-  addEventListener('resize', sizeUp);
-  if (window.ResizeObserver) new ResizeObserver(sizeUp).observe(node);
-  const set = clientX => {
-    const r = node.getBoundingClientRect();
-    const pct = Math.max(2, Math.min(98, ((clientX - r.left) / r.width) * 100));
-    after.style.width = pct + '%';
-    handle.style.left = pct + '%';
-  };
-  node.addEventListener('mousedown', e => { dragging = true; set(e.clientX); });
-  node.addEventListener('touchstart', e => { dragging = true; set(e.touches[0].clientX); }, { passive: true });
-  addEventListener('mousemove', e => { if (dragging) set(e.clientX); });
-  addEventListener('touchmove', e => { if (dragging) set(e.touches[0].clientX); }, { passive: true });
-  addEventListener('mouseup', () => dragging = false);
-  addEventListener('touchend', () => dragging = false);
-  node.addEventListener('click', e => { if (!dragging) set(e.clientX); });
-}
-
 /* ================================================================ HOME ==== */
 function renderHome(){
   buildHero();
@@ -675,65 +661,21 @@ function renderProject(){
 
   $('#p-facts').innerHTML = `
     <dl>
-      <dt>Client</dt><dd>${clientOf(p)}</dd>
-      <dt>Location</dt><dd>${placeOf(p)}</dd>
-      <dt>Area</dt><dd><span data-sqft="${p.area_sqft || ''}"></span></dd>
-      <dt>Sector</dt><dd>${p.sector}</dd>
-      <dt>Status</dt><dd>${val(p.status)}</dd>
+      <dt>${ICON.client}Client</dt><dd>${clientOf(p)}</dd>
+      <dt>${ICON.pin}Location</dt><dd>${placeOf(p)}</dd>
+      <dt>${ICON.area}Area</dt><dd><span data-sqft="${p.area_sqft || ''}"></span></dd>
+      <dt>${ICON.sector}Sector</dt><dd>${p.sector}</dd>
+      <dt>${ICON.status}Status</dt><dd>${val(p.status)}</dd>
     </dl>
-    <div class="facts__extra" id="p-extra">
-      <dl>
-        <dt>Completed</dt><dd>${val(p.year)}</dd>
-        <dt>Programme</dt><dd>${val(p.duration)}</dd>
-        <dt>Environment</dt><dd>${val(p.environment)}</dd>
-        <dt>Consultants</dt><dd>${val(p.consultants)}</dd>
-        <dt>Certification</dt><dd>${val(p.certification)}</dd>
-        <dt>Scope of works</dt><dd>${p.scope.join(' · ')}</dd>
-        <dt>Project manager</dt><dd>${val(p.pm)}</dd>
-        <dt>Site in charge</dt><dd>${val(p.site_lead)}</dd>
-      </dl>
-    </div>
-    <button class="more u" id="p-more" aria-expanded="false">More details</button>
     <div class="units" role="group" aria-label="Area units">
       <button data-val="sqft">sq ft</button><button data-val="sqm">sq m</button>
     </div>`;
 
-  $('#p-more').addEventListener('click', e => {
-    const open = $('#p-extra').classList.toggle('is-open');
-    e.currentTarget.textContent = open ? 'Fewer details' : 'More details';
-    e.currentTarget.setAttribute('aria-expanded', String(open));
-  });
   $$('.units [data-val]').forEach(b => b.addEventListener('click', () => {
     units = b.dataset.val;
     localStorage.setItem('scipl.units', units);
     renderAreas();
   }));
-
-  $('#p-toc').innerHTML = '<ol>' + p.story.map((s, i) =>
-    `<li><a class="u" href="#s${i + 1}"><span class="n">${i + 1}</span>${s.h}</a></li>`).join('') +
-    `<li><a class="u" href="#gallery"><span class="n">${p.story.length + 1}</span>Gallery</a></li></ol>`;
-
-  $('#p-story').innerHTML = p.story.map((s, i) =>
-    `<section id="s${i + 1}" class="rv"><h3><span class="n">${i + 1}</span>${s.h}</h3>
-     <p>${val(s.p)}</p></section>`).join('');
-
-  const ba = $('#p-ba');
-  if (ba && p.images.length > 1){
-    const a = p.images[0], b = heroImg(p);
-    ba.innerHTML = `
-      <div class="ba rv" style="aspect-ratio:16/9">
-        <span class="ba__lbl ba__lbl--b">Before</span>
-        <span class="ba__lbl ba__lbl--a">After</span>
-        ${pPic(p, a, '100vw', { alt: 'Space as received' })}
-        <div class="ba__after">${pPic(p, b, '100vw', { alt: 'Space as handed over' })}</div>
-        <div class="ba__handle"><span class="ba__knob">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M9 6 4 12l5 6M15 6l5 6-5 6" stroke="#111" stroke-width="1.6"/></svg>
-        </span></div>
-      </div>
-      <p class="credit"><span class="awaiting" title="Placeholder — awaiting content from SCIPL">Demonstration only — the “before” frame is another photograph from the same project. This needs SCIPL’s bare-shell site photography.</span></p>`;
-    beforeAfter($('.ba', ba));
-  }
 
   const shots = p.images.filter(i => i.stem !== p.hero);
   const items = shots.map((i, n) => ({

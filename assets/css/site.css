@@ -480,7 +480,7 @@ body.menu-open .menu__list a{ transform:none; }
 /* <picture> is display:inline by default. Clip-path on an inline box collapses
    it and the photograph paints blank while every computed style says visible.
    It must be a block that fills its frame. This cost a round to find once. */
-.fig picture,.plate__fig picture,.card__fig picture,.gal picture,.ba picture{
+.fig picture,.plate__fig picture,.card__fig picture,.gal picture{
   display:block; width:100%; height:100%;
 }
 .fig{ position:relative; overflow:hidden; background:var(--bg-alt); display:block; }
@@ -525,7 +525,7 @@ body.menu-open .menu__list a{ transform:none; }
 }
 .plate__go svg{ transition:transform var(--duration) var(--ease); }
 .plate:hover .plate__go svg{ transform:translateX(7px); }
-.plate__line{ display:block; color:var(--fg-muted); font-size:var(--fs-small); }
+.plate__line{ display:flex; align-items:center; gap:.4em; color:var(--fg-muted); font-size:var(--fs-small); }
 
 /* ============================================================ CARDS ====== */
 .grid{ display:grid; gap:var(--space-7) var(--space-5); }
@@ -553,7 +553,8 @@ body.menu-open .menu__list a{ transform:none; }
   font-family:var(--font-display); font-size:var(--fs-h4); font-weight:var(--w-h);
   line-height:1.15; letter-spacing:var(--track-h); display:block;
 }
-.card__line{ display:block; margin-top:var(--space-2); font-size:var(--fs-small); color:var(--fg-muted); }
+.card__line{ display:flex; align-items:center; gap:.4em; margin-top:var(--space-2); font-size:var(--fs-small); color:var(--fg-muted); }
+.ico{ width:1em; height:1em; flex:none; opacity:.7; }
 
 /* =========================================================== LOGOS ======= */
 /* ⭐ Real client logos at last, recovered from the deck's two flattened walls by
@@ -701,6 +702,7 @@ body.menu-open .menu__list a{ transform:none; }
 .facts{ position:sticky; top:calc(var(--header-h-min) + var(--space-5)); }
 .facts dl{ margin:0; }
 .facts dt{
+  display:flex; align-items:center; gap:.5em;
   font-size:var(--fs-meta); letter-spacing:var(--track-meta); text-transform:uppercase;
   color:var(--fg-muted); padding-top:var(--space-3);
 }
@@ -708,9 +710,6 @@ body.menu-open .menu__list a{ transform:none; }
   margin:0 0 var(--space-3); padding-bottom:var(--space-3);
   border-bottom:1px solid var(--rule); font-size:var(--fs-small);
 }
-.facts__extra{ display:none; }
-.facts__extra.is-open{ display:block; }
-.facts .more{ margin-top:var(--space-4); font-size:var(--fs-small); color:var(--accent); }
 
 /* the sq ft / sq m switch. ⭐ It lives HERE and only here — the client was clear
    that areas belong on pages that describe a project, not in the chrome of every
@@ -718,27 +717,6 @@ body.menu-open .menu__list a{ transform:none; }
 .units{ display:inline-flex; border:1px solid var(--border); font-size:var(--fs-meta); letter-spacing:.04em; margin-top:var(--space-4); }
 .units button{ padding:.45em .8em; opacity:.55; transition:opacity var(--duration-fast) var(--ease), background var(--duration-fast) var(--ease); }
 .units button[aria-pressed="true"]{ opacity:1; background:var(--fg); color:var(--bg); }
-
-.toc{ border-block:1px solid var(--rule); padding-block:var(--space-4); margin-bottom:var(--space-6); }
-.toc ol{ margin:0; padding:0; list-style:none; display:flex; gap:var(--space-6); flex-wrap:wrap; }
-.toc a{ color:inherit; font-size:var(--fs-small); }
-.toc .n{ color:var(--fg-muted); margin-right:.5em; }
-.story h3{ margin:var(--space-7) 0 var(--space-4); }
-.story h3 .n{ color:var(--fg-muted); margin-right:.6em; }
-.story p{ max-width:var(--measure); }
-
-.ba{ position:relative; overflow:hidden; user-select:none; touch-action:pan-y; cursor:ew-resize; }
-.ba img{ width:100%; height:100%; object-fit:cover; }
-.ba__after{ position:absolute; inset:0; overflow:hidden; width:50%; }
-/* the clipped side stays the width of the WHOLE frame, or the two halves show
-   different crops of the same wall. --ba-w is measured in site.js. */
-.ba__after > picture{ position:absolute; top:0; left:0; height:100%; width:var(--ba-w,100%); }
-.ba__after img{ width:100%; height:100%; object-fit:cover; }
-.ba__handle{ position:absolute; top:0; bottom:0; left:50%; width:2px; background:#fff; z-index:3; box-shadow:0 0 0 1px rgba(0,0,0,.25); }
-.ba__knob{ position:absolute; top:50%; left:50%; translate:-50% -50%; width:2.75rem; height:2.75rem; background:#fff; display:grid; place-items:center; box-shadow:0 2px 12px rgba(0,0,0,.3); }
-.ba__knob svg{ width:1.25rem; height:1.25rem; }
-.ba__lbl{ position:absolute; top:var(--space-4); z-index:4; font-size:var(--fs-meta); letter-spacing:var(--track-meta); text-transform:uppercase; color:#fff; background:rgba(0,0,0,.55); padding:.35em .7em; }
-.ba__lbl--b{ left:var(--space-4); } .ba__lbl--a{ right:var(--space-4); }
 
 .gal{ display:grid; grid-template-columns:repeat(auto-fill,minmax(12rem,1fr)); gap:var(--space-3); }
 .gal button{ display:block; width:100%; overflow:hidden; background:var(--bg-alt); aspect-ratio:4/3; }
